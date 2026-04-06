@@ -1,7 +1,14 @@
 name: CI
-on: [pull_request]
+on:
+  pull_request:
+    branches: [main]
+    # Only run on the static fixture branch — contract-* PRs don't need CI.
+    # The static PR's checks are the only ones the tests assert on.
+    paths-ignore:
+      - 'contract-*/**'
 jobs:
   check:
+    if: startsWith(github.head_ref, 'static/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
